@@ -10,29 +10,29 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      - name: Checkout code
-        uses: actions/checkout@v2
+    - name: Checkout code
+      uses: actions/checkout@v2
 
-      - name: Set up Python
-        uses: actions/setup-python@v2
-        with:
-          python-version: "3.8"
+    - name: Set up Python
+      uses: actions/setup-python@v2
+      with:
+        python-version: "3.8"
 
-      - name: Install dependencies
-        run: |
-          python -m pip install --upgrade pip
-          pip install boto3 sagemaker
+    - name: Install dependencies
+      run: |
+        python -m pip install --upgrade pip
+        pip install boto3 sagemaker
 
-      - name: Configure AWS credentials
-        uses: aws-actions/configure-aws-credentials@v1
-        with:
-          aws-access-key-id: ${{ vars.AWS_ACCESS_KEY_ID }}
-          aws-secret-access-key: ${{ vars.AWS_SECRET_ACCESS_KEY }}
-          aws-region: ${{ vars.AWS_REGION }}
+    - name: Configure AWS credentials
+      uses: aws-actions/configure-aws-credentials@v1
+      with:
+        aws-access-key-id: ${{ env.AWS_ACCESS_KEY_ID }}
+        aws-secret-access-key: ${{ env.AWS_SECRET_ACCESS_KEY }}
+        aws-region: ${{ env.AWS_REGION }}
 
-      - name: Trigger SageMaker training job
-        run: python trigger_training.py
-        env:
-          TRAIN_BUCKET: ${{ vars.TRAIN_BUCKET }}
-          TEST_BUCKET: ${{ vars.TEST_BUCKET }}
-          AWS_REGION: ${{ vars.AWS_REGION }}
+    - name: Trigger SageMaker training job
+      run: python trigger_training.py
+      env:
+        TRAIN_BUCKET: ${{ env.TRAIN_BUCKET }}
+        TEST_BUCKET: ${{ env.TEST_BUCKET }}
+        AWS_REGION: ${{ env.AWS_REGION }}
