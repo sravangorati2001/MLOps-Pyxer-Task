@@ -35,3 +35,4 @@ jobs:
         env:
           TRAIN_BUCKET: ${{ vars.TRAIN_BUCKET }}
           TEST_BUCKET: ${{ vars.TEST_BUCKET }}
+          AWS_REGION: ${{ vars.AWS_REGION }}
