@@ -26,13 +26,13 @@ jobs:
     - name: Configure AWS credentials
       uses: aws-actions/configure-aws-credentials@v1
       with:
-        aws-access-key-id: ${{ env.AWS_ACCESS_KEY_ID }}
-        aws-secret-access-key: ${{ env.AWS_SECRET_ACCESS_KEY }}
+        aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+        aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
         aws-region: us-west-1
 
     - name: Trigger SageMaker training job
       run: python trigger_training.py
       env:
-        TRAIN_BUCKET: ${{ env.TRAIN_BUCKET }}
-        TEST_BUCKET: ${{ env.TEST_BUCKET }}
+        TRAIN_BUCKET: ${{ secrets.TRAIN_BUCKET }}
+        TEST_BUCKET: ${{ secrets.TEST_BUCKET }}
         AWS_REGION: us-west-1
