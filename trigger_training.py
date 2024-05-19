@@ -47,7 +47,7 @@ def main():
         image_uri=image_uri,
         role=role,
         instance_count=1,
-        instance_type='m1.m5.large',  # Valid instance type
+        instance_type='ml.m5.large',  # Valid instance type
         volume_size=30,
         max_run=3600,
         input_mode='File',
