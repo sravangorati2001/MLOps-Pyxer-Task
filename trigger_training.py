@@ -42,6 +42,7 @@ def main():
     shutil.copy('train.py', temp_source_dir)
     shutil.copy('requirements.txt', temp_source_dir)
 
+
     estimator = Estimator(
         image_uri=image_uri,
         role=role,
