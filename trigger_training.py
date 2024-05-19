@@ -49,7 +49,7 @@ def main():
         image_uri=image_uri,
         role=role,
         instance_count=1,
-        instance_type='ml.m5.large',
+        instance_type='ml.t2.medium',  # Use a smaller instance type
         volume_size=30,
         max_run=3600,
         input_mode='File',
