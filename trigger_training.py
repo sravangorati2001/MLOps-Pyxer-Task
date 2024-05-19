@@ -4,7 +4,7 @@ import sagemaker
 from sagemaker.estimator import Estimator
 
 def main():
-    role = 'arn:aws:iam::537646564455:role/awssagemaker'
+    role = 'arn:aws:iam::992382664147:role/awssagemaker'
     region = os.environ['AWS_REGION']
     train_bucket = os.environ['TRAIN_BUCKET']
     test_bucket = os.environ['TEST_BUCKET']
@@ -47,7 +47,7 @@ def main():
         image_uri=image_uri,
         role=role,
         instance_count=1,
-        instance_type='ml.m5.large',  # Valid instance type
+        instance_type='ml.t3.medium',  # Valid instance type
         volume_size=30,
         max_run=3600,
         input_mode='File',
