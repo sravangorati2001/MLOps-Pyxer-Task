@@ -1,39 +1,46 @@
+import os
 import boto3
 import sagemaker
 from sagemaker.estimator import Estimator
-import os
 
-# Initialize the SageMaker session
-sagemaker_session = sagemaker.Session()
+def main():
+    role = 'arn:aws:iam::537646564455:role/awssagemaker'
+    region = os.environ['AWS_REGION']
+    train_bucket = os.environ['TRAIN_BUCKET']
+    test_bucket = os.environ['TEST_BUCKET']
+    
+    # Define the image URI for the estimator
+    image_uri = '763104351884.dkr.ecr.us-west-1.amazonaws.com/tensorflow-training:2.3.0-cpu-py37-ubuntu18.04'
 
-# Get the IAM role
-role = 'arn:aws:iam::537646564455:role/awssagemaker'
+    # Define the entry point script
+    entry_point = 'train.py'
 
-# S3 bucket for output
-bucket = 'output-pyxer'
+    estimator = Estimator(
+        image_uri=image_uri,
+        role=role,
+        instance_count=1,
+        instance_type='ml.m5.large',
+        volume_size=30,
+        max_run=3600,
+        input_mode='File',
+        output_path=f's3://{train_bucket}/output',
+        sagemaker_session=sagemaker.Session(),
+        entry_point=entry_point,
+        source_dir='.'
+    )
 
-# Path to your training script and input data
-entry_point = 'train.py'
-source_dir = '.'
-train_instance_type = 'ml.m5.large'
-train_instance_count = 1
-output_path = f's3://{bucket}/output'
+    train_input = sagemaker.inputs.TrainingInput(
+        s3_data=f's3://{train_bucket}/images',
+        content_type='application/x-image'
+    )
 
-# Create an Estimator
-estimator = Estimator(
-    entry_point=entry_point,
-    source_dir=source_dir,
-    role=role,
-    instance_count=train_instance_count,
-    instance_type=train_instance_type,
-    output_path=output_path,
-    sagemaker_session=sagemaker_session,
-    framework_version='2.3',
-    py_version='py37'
-)
+    test_input = sagemaker.inputs.TrainingInput(
+        s3_data=f's3://{test_bucket}/images',
+        content_type='application/x-image'
+    )
 
-# Start the training job
-estimator.fit({
-    'train': f's3://{os.environ["TRAIN_BUCKET"]}/train',
-    'test': f's3://{os.environ["TEST_BUCKET"]}/test'
-})
+    # Start the training job
+    estimator.fit({'train': train_input, 'test': test_input})
+
+if __name__ == '__main__':
+    main()

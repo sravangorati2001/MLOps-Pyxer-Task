@@ -43,8 +43,8 @@ if __name__ == "__main__":
     # Access environment variables
     train_bucket = os.environ.get('TRAIN_BUCKET')
     test_bucket = os.environ.get('TEST_BUCKET')
-    train_prefix = 'train/'
-    test_prefix = 'test/'
+    train_prefix = 'images/'  # Change this to the correct prefix for images
+    test_prefix = 'images/'  # Change this to the correct prefix for images
     local_train_dir = '/opt/ml/input/data/train'
     local_test_dir = '/opt/ml/input/data/test'
 
@@ -81,6 +81,6 @@ if __name__ == "__main__":
     print(f'Test accuracy: {test_acc}')
 
     # Save the model
-    model_dir = os.path.join('/opt/ml/model')
+    model_dir = '/opt/ml/model'
     os.makedirs(model_dir, exist_ok=True)
     model.save(os.path.join(model_dir, 'model.h5'))
