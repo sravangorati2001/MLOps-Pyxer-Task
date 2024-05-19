@@ -44,6 +44,7 @@ def main():
 
 
 
+
     estimator = Estimator(
         image_uri=image_uri,
         role=role,
