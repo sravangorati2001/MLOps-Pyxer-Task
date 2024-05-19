@@ -8,7 +8,7 @@ def main():
     region = os.environ['AWS_REGION']
     train_bucket = os.environ['TRAIN_BUCKET']
     test_bucket = os.environ['TEST_BUCKET']
-
+    
     # Debugging: print current directory and contents
     print("Current Directory: ", os.getcwd())
     print("Directory Contents: ", os.listdir('.'))
@@ -24,6 +24,10 @@ def main():
     # Define the entry point script
     entry_point = 'train.py'
 
+    # Debugging: Check for all files in the current directory
+    for root, dirs, files in os.walk('.'):
+        print(root, dirs, files)
+
     estimator = Estimator(
         image_uri=image_uri,
         role=role,
@@ -35,7 +39,7 @@ def main():
         output_path=f's3://{train_bucket}/output',
         sagemaker_session=sagemaker.Session(),
         entry_point=entry_point,
-        source_dir='.'
+        source_dir='.'  # Ensure this points to the correct directory
     )
 
     train_input = sagemaker.inputs.TrainingInput(
