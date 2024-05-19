@@ -8,7 +8,16 @@ def main():
     region = os.environ['AWS_REGION']
     train_bucket = os.environ['TRAIN_BUCKET']
     test_bucket = os.environ['TEST_BUCKET']
-    
+
+    # Debugging: print current directory and contents
+    print("Current Directory: ", os.getcwd())
+    print("Directory Contents: ", os.listdir('.'))
+
+    # Verify that train.py exists
+    if not os.path.exists('train.py'):
+        print("Error: train.py not found!")
+        return
+
     # Define the image URI for the estimator
     image_uri = '763104351884.dkr.ecr.us-west-1.amazonaws.com/tensorflow-training:2.3.0-cpu-py37-ubuntu18.04'
 
@@ -30,12 +39,12 @@ def main():
     )
 
     train_input = sagemaker.inputs.TrainingInput(
-        s3_data=f's3://{train_bucket}/',
+        s3_data=f's3://{train_bucket}/images',
         content_type='application/x-image'
     )
 
     test_input = sagemaker.inputs.TrainingInput(
-        s3_data=f's3://{test_bucket}/',
+        s3_data=f's3://{test_bucket}/images',
         content_type='application/x-image'
     )
 
