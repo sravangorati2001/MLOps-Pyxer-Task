@@ -8,7 +8,7 @@ def main():
     region = os.environ['AWS_REGION']
     train_bucket = os.environ['TRAIN_BUCKET']
     test_bucket = os.environ['TEST_BUCKET']
-    
+
     # Debugging: print current directory and contents
     print("Current Directory: ", os.getcwd())
     print("Directory Contents: ", os.listdir('.'))
@@ -42,14 +42,11 @@ def main():
     shutil.copy('train.py', temp_source_dir)
     shutil.copy('requirements.txt', temp_source_dir)
 
-    # If there are other necessary files, add them here
-    # shutil.copy('other_necessary_file.py', temp_source_dir)
-
     estimator = Estimator(
         image_uri=image_uri,
         role=role,
         instance_count=1,
-        instance_type='ml.t2.medium',  # Use a smaller instance type
+        instance_type='ml.m5.large',  # Valid instance type
         volume_size=30,
         max_run=3600,
         input_mode='File',
