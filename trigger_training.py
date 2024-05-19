@@ -43,6 +43,7 @@ def main():
     shutil.copy('requirements.txt', temp_source_dir)
 
 
+
     estimator = Estimator(
         image_uri=image_uri,
         role=role,
