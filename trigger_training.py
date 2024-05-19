@@ -30,12 +30,12 @@ def main():
     )
 
     train_input = sagemaker.inputs.TrainingInput(
-        s3_data=f's3://{train_bucket}/images',
+        s3_data=f's3://{train_bucket}/',
         content_type='application/x-image'
     )
 
     test_input = sagemaker.inputs.TrainingInput(
-        s3_data=f's3://{test_bucket}/images',
+        s3_data=f's3://{test_bucket}/',
         content_type='application/x-image'
     )
 

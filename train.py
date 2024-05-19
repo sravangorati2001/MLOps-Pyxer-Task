@@ -29,7 +29,7 @@ def load_data(data_dir):
     labels = []
 
     for _, row in labels_df.iterrows():
-        image_path = os.path.join(data_dir, 'images', row['image'])
+        image_path = os.path.join(data_dir, row['image'])
         image = Image.open(image_path)
         image = np.array(image)
         images.append(image)
@@ -43,20 +43,24 @@ if __name__ == "__main__":
     # Access environment variables
     train_bucket = os.environ.get('TRAIN_BUCKET')
     test_bucket = os.environ.get('TEST_BUCKET')
-    train_prefix = 'images/'  # Change this to the correct prefix for images
-    test_prefix = 'images/'  # Change this to the correct prefix for images
-    local_train_dir = '/opt/ml/input/data/train'
-    local_test_dir = '/opt/ml/input/data/test'
+    train_prefix = 'images/'  # Prefix for train images
+    test_prefix = 'images/'  # Prefix for test images
+    local_train_dir = '/opt/ml/input/data/train/images'
+    local_test_dir = '/opt/ml/input/data/test/images'
+    local_train_labels = '/opt/ml/input/data/train/labels.csv'
+    local_test_labels = '/opt/ml/input/data/test/labels.csv'
 
     # Download data from S3
     download_data_from_s3(train_bucket, train_prefix, local_train_dir)
+    download_data_from_s3(train_bucket, 'labels.csv', local_train_labels)
     download_data_from_s3(test_bucket, test_prefix, local_test_dir)
+    download_data_from_s3(test_bucket, 'labels.csv', local_test_labels)
 
     # Load training data
-    train_images, train_labels = load_data(local_train_dir)
+    train_images, train_labels = load_data('/opt/ml/input/data/train')
 
     # Load test data
-    test_images, test_labels = load_data(local_test_dir)
+    test_images, test_labels = load_data('/opt/ml/input/data/test')
 
     # Normalize data
     train_images = train_images / 255.0
