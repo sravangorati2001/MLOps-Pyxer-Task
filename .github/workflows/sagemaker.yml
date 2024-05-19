@@ -14,29 +14,29 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      - name: Checkout code
-        uses: actions/checkout@v2
+    - name: Checkout code
+      uses: actions/checkout@v2
 
-      - name: Set up Python
-        uses: actions/setup-python@v2
-        with:
-          python-version: "3.8"
+    - name: Set up Python
+      uses: actions/setup-python@v2
+      with:
+        python-version: "3.8"
 
-      - name: Install dependencies
-        run: |
-          python -m pip install --upgrade pip
-          pip install boto3 sagemaker
+    - name: Install dependencies
+      run: |
+        python -m pip install --upgrade pip
+        pip install boto3 sagemaker
 
-      - name: Configure AWS credentials
-        uses: aws-actions/configure-aws-credentials@v1
-        with:
-          aws-access-key-id: AKIAX2LR3QRTTVPYHNMU
-          aws-secret-access-key: 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
-          aws-region: us-west-1
+    - name: Configure AWS credentials
+      uses: aws-actions/configure-aws-credentials@v1
+      with:
+        aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+        aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+        aws-region: us-west-1
 
-      - name: Trigger SageMaker training job
-        run: python trigger_training.py
-        env:
-          TRAIN_BUCKET: traindata-pyxer
-          TEST_BUCKET: testdata-pyxer
-          AWS_REGION: us-west-1
+    - name: Trigger SageMaker training job
+      run: python trigger_training.py
+      env:
+        TRAIN_BUCKET: ${{ secrets.TRAIN_BUCKET }}
+        TEST_BUCKET: ${{ secrets.TEST_BUCKET }}
+        AWS_REGION: us-west-1
