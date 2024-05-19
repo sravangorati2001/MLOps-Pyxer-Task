@@ -28,6 +28,23 @@ def main():
     for root, dirs, files in os.walk('.'):
         print(root, dirs, files)
 
+    # Define the source directory
+    source_dir = '.'
+
+    # Create a temporary directory to copy necessary files
+    import shutil
+    temp_source_dir = '/tmp/temp_source_dir'
+    if os.path.exists(temp_source_dir):
+        shutil.rmtree(temp_source_dir)
+    os.makedirs(temp_source_dir)
+    
+    # Copy only necessary files to the temp directory
+    shutil.copy('train.py', temp_source_dir)
+    shutil.copy('requirements.txt', temp_source_dir)
+
+    # If there are other necessary files, add them here
+    # shutil.copy('other_necessary_file.py', temp_source_dir)
+
     estimator = Estimator(
         image_uri=image_uri,
         role=role,
@@ -39,7 +56,7 @@ def main():
         output_path=f's3://{train_bucket}/output',
         sagemaker_session=sagemaker.Session(),
         entry_point=entry_point,
-        source_dir='.'  # Ensure this points to the correct directory
+        source_dir=temp_source_dir  # Use the temp source directory
     )
 
     train_input = sagemaker.inputs.TrainingInput(
